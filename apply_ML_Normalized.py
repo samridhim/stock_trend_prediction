@@ -18,7 +18,7 @@ from sklearn.cross_validation import KFold
 
 def performKNNClass(X_train, y_train, X_test, y_test):
 
-	clf = neighbors.KNeighborsClassifier(n_neighbors=50)
+	clf = neighbors.KNeighborsClassifier(n_neighbors=5)
 	clf.fit(X_train, y_train)
 
 	accuracy = clf.score(X_test, y_test)
@@ -37,7 +37,7 @@ def performSVMClass(X_train, y_train, X_test, y_test):
 
 def performRFClass(X_train, y_train, X_test, y_test):
 
-	clf = RandomForestClassifier(n_estimators=50, n_jobs=1)
+	clf = RandomForestClassifier(n_estimators=20, n_jobs=1,max_depth=5)
 	clf.fit(X_train, y_train)
 
 	accuracy = clf.score(X_test, y_test)
@@ -90,8 +90,9 @@ def predict_nextDay_trend(stockToPredict, symbol):
 		y_train, y_test = y[train_index], y[test_index]
 		acc_svm = acc_svm + performSVMClass(X_train, y_train, X_test, y_test)
 		acc_knn = acc_knn + performKNNClass(X_train, y_train, X_test, y_test)
+		acc_rcf = acc_rcf + performRFClass(X_train, y_train, X_test, y_test)
 
-	print ""
+	print "Final RF Accuracy: 	",acc_rcf/num_folds
 	print "Final SVM Accuracy:  ", acc_svm/num_folds
 	print "Final KNN Accuracy:  ", acc_knn/num_folds
 
@@ -132,8 +133,9 @@ def predict_next6Day_trend(stockToPredict, symbol):
 		y_train, y_test = y[train_index], y[test_index]
 		acc_svm = acc_svm + performSVMClass(X_train, y_train, X_test, y_test)
 		acc_knn = acc_knn + performKNNClass(X_train, y_train, X_test, y_test)
+		acc_rcf = acc_rcf + performRFClass(X_train, y_train, X_test, y_test)
 
-	print ""
+	print "Final RCF Accuracy: 	", acc_rcf/num_folds
 	print "Final SVM Accuracy:  ", acc_svm/num_folds
 	print "Final KNN Accuracy:  ", acc_knn/num_folds
 
